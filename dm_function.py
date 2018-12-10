@@ -52,7 +52,7 @@ def weather(token, lon, lat):
     api_url = 'http://api.openweathermap.org/data/2.5/forecast?lat=%s&lon=%s&APPID=%s' % (lat, lon, token)
     params = {'timeout': 30, 'offset': None}
     resp = requests.get(api_url, params)
-    result_json = resp.json()['list'][0]['clouds']['all']
+    result_json = resp.json()['list'][1]['clouds']['all']
     if result_json < 50:
         message = 'Cloud coverage = %d' % result_json
     else:
