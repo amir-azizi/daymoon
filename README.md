@@ -6,7 +6,7 @@ to calculate the times of the day that the moon is visible in the sky.
 [OpenWeatherMap](https://openweathermap.org) and if that is < 50%, it returns cloud 
 coverage message.
 The main code, `dm_sched.py`, uses [APScheduler](https://apscheduler.readthedocs.io/en/latest/)
-to do the calculations at 8 am everyday.
+to do the calculations and sends the message.
 
 The bot is hosted on [Heroku](https://heroku.com/) and is scheduled to run 
 everyday at 8am CEST.
