@@ -54,7 +54,7 @@ def weather(token, lon, lat):
     resp = requests.get(api_url, params)
     result_json = resp.json()['list'][1]['clouds']['all']
     if result_json < 50:
-        message = 'Cloud coverage = %d' % result_json
+        message = 'Cloud coverage = %d%%.' % result_json
     else:
         message = '--'
     return message
