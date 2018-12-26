@@ -6,8 +6,15 @@ Created on Wed Dec  5 16:19:39 2018
 @author: amir
 """
 import ephem #used to calculate sun/moon rise/set. TODO: use novas_py or skyfield
-from datetime import date
+from datetime import date, datetime
 import requests
+import pytz
+
+cest = pytz.timezone('Europe/Berlin')
+
+def utc_to_local(utc_dt, local_tz):
+    local_dt = utc_dt.replace(tzinfo=pytz.utc).astimezone(local_tz)
+    return local_tz.normalize(local_dt).time()
 
 def daymoon():
     bochum = ephem.Observer()
@@ -16,18 +23,17 @@ def daymoon():
     bochum.lon = '7:12:58'
     bochum.date = date.today()
     bochum.horizon = '0:30' #to compensate for obstacles in the horizon
-
+    
     moon = ephem.Moon()
-    #TODO: the following only converts timezone from UTC to local.. make it anywhere
-    mr = ephem.localtime(bochum.next_rising(moon)).time()
-    ms = ephem.localtime(bochum.next_setting(moon)).time()
+    mr = utc_to_local(bochum.next_rising(moon).datetime(), cest)
+    ms = utc_to_local(bochum.next_setting(moon).datetime(), cest)
     #print('todays moonrise: %s' % mr)
-
+    
     sun = ephem.Sun()
-    sr = ephem.localtime(bochum.next_rising(sun)).time()
-    ss = ephem.localtime(bochum.next_setting(sun)).time()
+    sr = utc_to_local(bochum.next_rising(sun).datetime(), cest)
+    ss = utc_to_local(bochum.next_setting(sun).datetime(), cest)
     #print('todays sunrise: %s' % sr)
-
+    
     dm_start = '-'
     dm_end = '-'
     if mr<ss:
@@ -39,7 +45,7 @@ def daymoon():
             dm_end = ss
         else:
             dm_end = ms
-
+    
     #TODO: make sure this sanity check works for all cases
     if dm_start != '-' and dm_end != '-':
         out_message = 'Today daymoon is visible from %s to %s.\n' % (dm_start, dm_end)
