@@ -38,13 +38,13 @@ def daymoon():
     dm_end = '-'
     if mr<ss:
         if mr>sr:
-            dm_start = mr
+            dm_start = mr.replace(microsecond=0)
         else:
-            dm_start = sr
+            dm_start = sr.replace(microsecond=0)
         if ms>ss:
-            dm_end = ss
+            dm_end = ss.replace(microsecond=0)
         else:
-            dm_end = ms
+            dm_end = ms.replace(microsecond=0)
     
     #TODO: make sure this sanity check works for all cases
     if dm_start != '-' and dm_end != '-':
